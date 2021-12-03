@@ -1,4 +1,7 @@
+.idea/
+.ipynb_checkpoints/
+cache/
+venv/
+
 *.pyc
 *.tar.gz
-.ipynb_checkpoints
-cache
