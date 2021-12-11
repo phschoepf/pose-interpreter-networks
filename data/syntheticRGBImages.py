@@ -17,7 +17,13 @@ from pycococreatortools import pycococreatortools
 OBJ_PER_BG = 1  # how often a background image is "recycled" with a different object
 
 
-def main(background_folder: str, foreground_folder: str, output_folder: str, output_format: str = "jpg"):
+def main(root_dir, output_format: str = "jpg"):
+    # folder structure of the dataset
+    background_folder = os.path.join(root_dir, "backgrounds")
+    foreground_folder = os.path.join(root_dir, "renders")
+    img_output_folder = os.path.join(root_dir, "image")
+    json_folder = os.path.join(root_dir, "annotations")
+
     coco_output = {
         "info": {"description": None,
                  "url": "",
@@ -27,7 +33,7 @@ def main(background_folder: str, foreground_folder: str, output_folder: str, out
                  "date_created": datetime.datetime.timestamp(datetime.datetime.now())
                  },
         "licenses": "",
-        "categories": json.load(open("3DprintingDataset/annotations/categories.json")),
+        "categories": json.load(open(os.path.join(json_folder, "categories.json"))),
         "images": [],
         "annotations": []
     }
@@ -35,10 +41,10 @@ def main(background_folder: str, foreground_folder: str, output_folder: str, out
     backgrounds = [f for f in os.listdir(background_folder) if f.__contains__(".jpg")]
     foregrounds = [f for f in os.listdir(foreground_folder) if f.__contains__(".png")]
     for bg_id, bg in enumerate(backgrounds):
-        with Image.open(os.path.join(os.getcwd(), background_folder, bg), mode="r") as bg_img:
+        with Image.open(os.path.join(background_folder, bg), mode="r") as bg_img:
             bg_img = bg_img.convert("RGBA")
             for fg_id, fg in enumerate(random.sample(foregrounds, OBJ_PER_BG)):
-                with Image.open(os.path.join(os.getcwd(), foreground_folder, fg), mode="r") as fg_img:
+                with Image.open(os.path.join(foreground_folder, fg), mode="r") as fg_img:
                     fg_img = fg_img.convert("RGBA")
 
                     # running image id
@@ -52,21 +58,21 @@ def main(background_folder: str, foreground_folder: str, output_folder: str, out
                     blend_img = Image.alpha_composite(bg_img, padded_fg).convert("RGB")
 
                     output_filename = os.path.splitext(bg)[0] + os.path.splitext(fg)[0] + "." + output_format
-                    blend_img.save(os.path.join(os.getcwd(), output_folder, output_filename))
+                    blend_img.save(os.path.join(img_output_folder, output_filename))
 
                     # create a binary (black/white) mask as sparse array
                     mask = padded_fg.copy().convert("L")
                     mask = np.asfortranarray(mask, bool)
 
                     # make an annotation string
-                    category_info = {'id': 1, 'is_crowd': False}
+                    category_info = {'id': pose["category"], 'is_crowd': False}
                     coco_output["images"].append(pycococreatortools.create_image_info(
                         image_id=img_id, file_name=output_filename, image_size=blend_img.size))
                     # TODO support multiple objects on one image
                     coco_output["annotations"].append(pycococreatortools.create_annotation_info(
                         img_id, img_id, category_info, mask))
 
-    with open(os.path.join(os.getcwd(), "3DprintingDataset.json"), 'w') as output_json_file:
+    with open(os.path.join(json_folder, "3DprintingDataset.json"), 'w') as output_json_file:
         json.dump(coco_output, output_json_file)
 
 
@@ -100,11 +106,9 @@ def pad(img: PIL.Image.Image, position: tuple, target_size=(640, 480)):
 
 if __name__ == "__main__":
     # start = time.perf_counter()
-    if not os.path.exists(sys.argv[3]):
-        os.makedirs(sys.argv[3])
-    main(
-        os.path.join(os.getcwd(), sys.argv[1]),
-        os.path.join(os.getcwd(), sys.argv[2]),
-        os.path.join(os.getcwd(), sys.argv[3]))
+    dataset_root = sys.argv[1]
+    if not os.path.exists(dataset_root):
+        os.makedirs(dataset_root)
+    main(dataset_root)
     # stop = time.perf_counter()
     # print(f"Elapsed: {stop - start} seconds")
