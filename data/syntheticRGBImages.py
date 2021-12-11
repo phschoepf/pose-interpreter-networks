@@ -47,6 +47,12 @@ def main(root_dir, output_format: str = "jpg"):
                 with Image.open(os.path.join(foreground_folder, fg), mode="r") as fg_img:
                     fg_img = fg_img.convert("RGBA")
 
+                    # TODO put pose in annotations
+                    pose = json.load(open(os.path.join(json_folder, os.path.splitext(fg)[0] + ".json")))
+                    position = (pose['position']['x'], pose['position']['y'], pose['position']['z'])
+                    orientation = (pose['orientation']['w'], pose['orientation']['x'],
+                                   pose['orientation']['y'], pose['orientation']['z'])
+
                     # running image id
                     img_id = bg_id * OBJ_PER_BG + fg_id
 
