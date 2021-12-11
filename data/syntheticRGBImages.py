@@ -1,25 +1,49 @@
+import json
 import operator
 import random
-import time
+import datetime
 
 import PIL.Image
 from PIL import Image
 import os
 import sys
+import numpy as np
+
+# %pip install git+git://github.com/waspinator/pycococreator.git@0.2.0
+from pycococreatortools import pycococreatortools
 
 """Overlay transparent foreground images onto background images.
 """
 
+OBJ_PER_BG = 1  # how often a background image is "recycled" with a different object
+
 
 def main(background_folder: str, foreground_folder: str, output_folder: str, output_format: str = "jpg"):
+    coco_output = {
+        "info": {"description": None,
+                 "url":"",
+                 "version":1.0,
+                 "year":2021,
+                 "contributor":"Rene Erler, Philemon Schoepf, Lukas Walter",
+                 "date_created": datetime.datetime.timestamp(datetime.datetime.now())
+                 },
+        "licenses": "",
+        "categories": json.load(open("3DprintingDataset/annotations/categories.json")),
+        "images": [],
+        "annotations": []
+    }
+
     backgrounds = [f for f in os.listdir(background_folder) if f.__contains__(".jpg")]
     foregrounds = [f for f in os.listdir(foreground_folder) if f.__contains__(".png")]
-    for bg in backgrounds:
+    for bg_id, bg in enumerate(backgrounds):
         with Image.open(os.path.join(os.getcwd(), background_folder, bg), mode="r") as bg_img:
             bg_img = bg_img.convert("RGBA")
-            for fg in random.sample(foregrounds, 1):
+            for fg_id, fg in enumerate(random.sample(foregrounds, OBJ_PER_BG)):
                 with Image.open(os.path.join(os.getcwd(), foreground_folder, fg), mode="r") as fg_img:
                     fg_img = fg_img.convert("RGBA")
+
+                    # running image id
+                    img_id = bg_id * OBJ_PER_BG + fg_id
 
                     # pad the foreground image to same size as background
                     offset = random_offset(bg_img, fg_img)
@@ -30,6 +54,20 @@ def main(background_folder: str, foreground_folder: str, output_folder: str, out
 
                     output_filename = os.path.splitext(bg)[0] + os.path.splitext(fg)[0] + "." + output_format
                     blend_img.save(os.path.join(os.getcwd(), output_folder, output_filename))
+
+                    # create a binary (black/white) mask as sparse array
+                    mask = padded_fg.copy().convert("L")
+                    mask = np.asfortranarray(mask, bool)
+
+                    # make an annotation string
+                    category_info = {'id': 1, 'is_crowd': False}
+                    coco_output["images"].append(pycococreatortools.create_image_info(
+                        image_id=img_id, file_name=output_filename, image_size=blend_img.size))
+                    coco_output["annotations"].append(pycococreatortools.create_annotation_info(
+                        img_id, img_id, category_info, mask))
+
+    with open(os.path.join(os.getcwd(), "3DprintingDataset.json"), 'w') as output_json_file:
+        json.dump(coco_output, output_json_file)
 
 
 def random_offset(bg_img: PIL.Image.Image, fg_img: PIL.Image.Image):
