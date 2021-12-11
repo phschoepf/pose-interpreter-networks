@@ -1,14 +1,13 @@
+import datetime
 import json
 import operator
+import os
 import random
-import datetime
+import sys
 
 import PIL.Image
-from PIL import Image
-import os
-import sys
 import numpy as np
-
+from PIL import Image
 # %pip install git+git://github.com/waspinator/pycococreator.git@0.2.0
 from pycococreatortools import pycococreatortools
 
@@ -21,10 +20,10 @@ OBJ_PER_BG = 1  # how often a background image is "recycled" with a different ob
 def main(background_folder: str, foreground_folder: str, output_folder: str, output_format: str = "jpg"):
     coco_output = {
         "info": {"description": None,
-                 "url":"",
-                 "version":1.0,
-                 "year":2021,
-                 "contributor":"Rene Erler, Philemon Schoepf, Lukas Walter",
+                 "url": "",
+                 "version": 1.0,
+                 "year": 2021,
+                 "contributor": "Rene Erler, Philemon Schoepf, Lukas Walter",
                  "date_created": datetime.datetime.timestamp(datetime.datetime.now())
                  },
         "licenses": "",
@@ -63,6 +62,7 @@ def main(background_folder: str, foreground_folder: str, output_folder: str, out
                     category_info = {'id': 1, 'is_crowd': False}
                     coco_output["images"].append(pycococreatortools.create_image_info(
                         image_id=img_id, file_name=output_filename, image_size=blend_img.size))
+                    # TODO support multiple objects on one image
                     coco_output["annotations"].append(pycococreatortools.create_annotation_info(
                         img_id, img_id, category_info, mask))
 
