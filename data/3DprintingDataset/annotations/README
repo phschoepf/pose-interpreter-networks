@@ -1,0 +1,22 @@
+# Annotations
+
+This folder contains image annotations JSONs.
+
+A pose annotation for a single pose rendering should be of the following format:
+	
+	{
+	"category":1,
+	"position":{
+		"x":0.1,
+		"y":-0.2,
+		"z":0.3
+		},
+	"orientation":{
+		"x":0.5,
+		"y":-0.3,
+		"z":0.67,
+		"w":-0.38
+		}
+	}
+	
+Orientations are given in quaternion notation, positions relative to the camera intrinsics.
