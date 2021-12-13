@@ -5,3 +5,7 @@ venv/
 
 *.pyc
 *.tar.gz
+
+blender/
+dist/
+doqu.egg-info/
