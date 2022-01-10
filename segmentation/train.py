@@ -20,7 +20,6 @@ import utils
 
 import sys
 assert sys.version.startswith('3.6')
-assert torch.__version__.startswith('0.4')
 
 
 def adjust_learning_rate(optimizer, epoch):

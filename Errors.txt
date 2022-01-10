@@ -1,0 +1,277 @@
+Errors
+
+
+Code on https://github.com/phschoepf/pose-interpreter-networks/tree/troubleshooting
+============================================
+
+
+/segmentation/train.py
+
+Epoch: [0][0/493]       Time 7.454 (7.454)      Data 3.026 (3.026)      Loss 16.6947 (16.6947)
+Epoch: [0][10/493]      Time 0.317 (0.956)      Data 0.057 (0.301)      Loss 2.3294 (8.7315)
+Epoch: [0][20/493]      Time 0.298 (0.801)      Data 0.000 (0.322)      Loss 1.1362 (5.4570)
+Epoch: [0][30/493]      Time 0.918 (0.759)      Data 0.794 (0.374)      Loss 1.1037 (4.0909)
+Epoch: [0][40/493]      Time 0.805 (0.715)      Data 0.682 (0.380)      Loss 0.9770 (3.3688)
+Epoch: [0][50/493]      Time 0.967 (0.709)      Data 0.835 (0.407)      Loss 0.8206 (2.9004)
+Epoch: [0][60/493]      Time 1.523 (0.704)      Data 1.384 (0.419)      Loss 0.6774 (2.5538)
+Epoch: [0][70/493]      Time 1.321 (0.690)      Data 1.194 (0.417)      Loss 0.9138 (2.2806)
+Epoch: [0][80/493]      Time 1.083 (0.686)      Data 0.960 (0.419)      Loss 0.5317 (2.0747)
+Epoch: [0][90/493]      Time 0.375 (0.671)      Data 0.251 (0.407)      Loss 0.3252 (1.8966)
+Epoch: [0][100/493]     Time 1.790 (0.673)      Data 1.664 (0.412)      Loss 0.4415 (1.7445)
+Epoch: [0][110/493]     Time 0.320 (0.661)      Data 0.000 (0.397)      Loss 0.2536 (1.6211)
+Epoch: [0][120/493]     Time 0.642 (0.660)      Data 0.521 (0.405)      Loss 0.2768 (1.5198)
+Epoch: [0][130/493]     Time 1.641 (0.663)      Data 1.513 (0.410)      Loss 0.3430 (1.4291)
+Epoch: [0][140/493]     Time 0.423 (0.658)      Data 0.292 (0.404)      Loss 0.2795 (1.3496)
+Epoch: [0][150/493]     Time 1.600 (0.664)      Data 1.480 (0.414)      Loss 0.2234 (1.2748)
+Epoch: [0][160/493]     Time 1.512 (0.661)      Data 1.385 (0.416)      Loss 0.2997 (1.2087)
+Epoch: [0][170/493]     Time 0.768 (0.657)      Data 0.647 (0.416)      Loss 0.1875 (1.1527)
+Epoch: [0][180/493]     Time 0.464 (0.654)      Data 0.343 (0.416)      Loss 0.1773 (1.1005)
+Epoch: [0][190/493]     Time 0.322 (0.653)      Data 0.037 (0.417)      Loss 0.2751 (1.0546)
+Epoch: [0][200/493]     Time 1.373 (0.654)      Data 1.248 (0.418)      Loss 0.1477 (1.0113)
+Epoch: [0][210/493]     Time 0.321 (0.650)      Data 0.018 (0.412)      Loss 0.1633 (0.9713)
+Epoch: [0][220/493]     Time 1.720 (0.652)      Data 1.599 (0.413)      Loss 0.1496 (0.9343)
+Epoch: [0][230/493]     Time 0.344 (0.649)      Data 0.000 (0.410)      Loss 0.1512 (0.9010)
+Epoch: [0][240/493]     Time 1.248 (0.650)      Data 1.125 (0.411)      Loss 0.1497 (0.8700)
+Epoch: [0][250/493]     Time 0.321 (0.650)      Data 0.000 (0.412)      Loss 0.1678 (0.8416)
+Epoch: [0][260/493]     Time 0.331 (0.653)      Data 0.022 (0.415)      Loss 0.1101 (0.8141)
+Epoch: [0][270/493]     Time 0.373 (0.653)      Data 0.000 (0.414)      Loss 0.1111 (0.7886)
+Epoch: [0][280/493]     Time 0.628 (0.655)      Data 0.485 (0.416)      Loss 0.1314 (0.7660)
+Epoch: [0][290/493]     Time 0.347 (0.654)      Data 0.000 (0.415)      Loss 0.1049 (0.7441)
+Epoch: [0][300/493]     Time 1.214 (0.658)      Data 1.071 (0.418)      Loss 0.1641 (0.7243)
+THCudaCheck FAIL file=/opt/conda/conda-bld/pytorch_1634272155627/work/aten/src/THC/THCCachingHostAllocator.cpp line=280 error=702 : the launch timed out and was terminated
+Traceback (most recent call last):
+  File "train.py", line 237, in <module>
+    main(cfg)
+  File "train.py", line 201, in main
+    train_batch_time, train_data_time, train_loss = train(train_loader, model, criterion, optimizer, epoch)
+  File "train.py", line 52, in train
+    losses.update(loss.item(), input.size(0))
+RuntimeError: CUDA error: the launch timed out and was terminated
+CUDA kernel errors might be asynchronously reported at some other API call,so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1.
+terminate called after throwing an instance of 'c10::CUDAError'
+  what():  CUDA error: the launch timed out and was terminated
+CUDA kernel errors might be asynchronously reported at some other API call,so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1.
+Exception raised from create_event_internal at /opt/conda/conda-bld/pytorch_1634272155627/work/c10/cuda/CUDACachingAllocator.cpp:1211 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x42 (0x7f6c4c159d62 in /home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x1c613 (0x7f6c91682613 in /home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/torch/lib/libc10_cuda.so)
+frame #2: c10::cuda::CUDACachingAllocator::raw_delete(void*) + 0x1a2 (0x7f6c91683022 in /home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/torch/lib/libc10_cuda.so)
+frame #3: c10::TensorImpl::release_resources() + 0xa4 (0x7f6c4c143314 in /home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/torch/lib/libc10.so)
+frame #4: torch::autograd::SavedVariable::reset_data() + 0xa1 (0x7f6c94ea5b31 in /home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/torch/lib/libtorch_cpu.so)
+frame #5: <unknown function> + 0x2f0482f (0x7f6c947b982f in /home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/torch/lib/libtorch_cpu.so)
+frame #6: <unknown function> + 0x35b65e2 (0x7f6c94e6b5e2 in /home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/torch/lib/libtorch_cpu.so)
+frame #7: torch::autograd::deleteNode(torch::autograd::Node*) + 0x7f (0x7f6c94e6b68f in /home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/torch/lib/libtorch_cpu.so)
+frame #8: <unknown function> + 0x359b1c8 (0x7f6c94e501c8 in /home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/torch/lib/libtorch_cpu.so)
+frame #9: c10::TensorImpl::release_resources() + 0x20 (0x7f6c4c143290 in /home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/torch/lib/libc10.so)
+frame #10: <unknown function> + 0x294e39 (0x7f6ce5683e39 in /home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/torch/lib/libtorch_python.so)
+frame #11: <unknown function> + 0xae2449 (0x7f6ce5ed1449 in /home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/torch/lib/libtorch_python.so)
+frame #12: THPVariable_subclass_dealloc(_object*) + 0x2b9 (0x7f6ce5ed1769 in /home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/torch/lib/libtorch_python.so)
+<omitting python frames>
+frame #23: __libc_start_main + 0xf3 (0x7f6d212b70b3 in /lib/x86_64-linux-gnu/libc.so.6)
+
+
+
+Error during same training on another machine:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+(venv) philemon@deb-cb:~/zid-gpl/robotic_vu/project/pose-interpreter-networks/segmentation$ python3 train.py config/drn_d_22_OilChange.yml 
+log_dir: logs/2022-01-10_10-16-18.751107_drn_d_22_OilChange
+checkpoint_dir: checkpoints/2022-01-10_10-16-18.751107_drn_d_22_OilChange
+loading annotations into memory...
+Done (t=1.07s)
+creating index...
+index created!
+loading annotations into memory...
+Done (t=0.48s)
+creating index...
+index created!
+Traceback (most recent call last):
+  File "train.py", line 237, in <module>
+    main(cfg)
+  File "train.py", line 201, in main
+    train_batch_time, train_data_time, train_loss = train(train_loader, model, criterion, optimizer, epoch)
+  File "train.py", line 49, in train
+    output = model(input)
+  File "/home/philemon/zid-gpl/robotic_vu/project/pose-interpreter-networks/venv/lib/python3.7/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home/philemon/zid-gpl/robotic_vu/project/pose-interpreter-networks/venv/lib/python3.7/site-packages/torch/nn/parallel/data_parallel.py", line 150, in forward
+    return self.module(*inputs, **kwargs)
+  File "/home/philemon/zid-gpl/robotic_vu/project/pose-interpreter-networks/venv/lib/python3.7/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home/philemon/zid-gpl/robotic_vu/project/pose-interpreter-networks/segmentation/models.py", line 63, in forward
+    x = self.base(x)
+  File "/home/philemon/zid-gpl/robotic_vu/project/pose-interpreter-networks/venv/lib/python3.7/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home/philemon/zid-gpl/robotic_vu/project/pose-interpreter-networks/venv/lib/python3.7/site-packages/torch/nn/modules/container.py", line 141, in forward
+    input = module(input)
+  File "/home/philemon/zid-gpl/robotic_vu/project/pose-interpreter-networks/venv/lib/python3.7/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home/philemon/zid-gpl/robotic_vu/project/pose-interpreter-networks/venv/lib/python3.7/site-packages/torch/nn/modules/container.py", line 141, in forward
+    input = module(input)
+  File "/home/philemon/zid-gpl/robotic_vu/project/pose-interpreter-networks/venv/lib/python3.7/site-packages/torch/nn/modules/module.py", line 1102, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home/philemon/zid-gpl/robotic_vu/project/pose-interpreter-networks/venv/lib/python3.7/site-packages/torch/nn/modules/conv.py", line 446, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+  File "/home/philemon/zid-gpl/robotic_vu/project/pose-interpreter-networks/venv/lib/python3.7/site-packages/torch/nn/modules/conv.py", line 443, in _conv_forward
+    self.padding, self.dilation, self.groups)
+RuntimeError: Given groups=1, weight of size [16, 3, 7, 7], expected input[16, 480, 640, 3] to have 3 channels, but got 480 channels instead
+
+
+
+Module error during training: 
+
+---------------------------------------------------------------------------
+AttributeError                            Traceback (most recent call last)
+/mnt/d/CloudStation/Studium/Bachelor/5. Semester/Robotics/project/repo/pose-interpreter-networks/segmentation/train.py in <module>
+    235     with open(config_path, 'r') as f:
+    236         cfg = Munch.fromYAML(f)
+--> 237     main(cfg)
+
+/mnt/d/CloudStation/Studium/Bachelor/5. Semester/Robotics/project/repo/pose-interpreter-networks/segmentation/train.py in main(cfg)
+    137         print('checkpoint_dir: {}'.format(checkpoint_dir))
+    138 
+--> 139     single_model = models.DRNSeg(cfg.arch, cfg.data.classes, None, pretrained=True)
+    140     model = torch.nn.DataParallel(single_model).cuda()
+    141     cudnn.benchmark = True
+
+AttributeError: module 'models' has no attribute 'DRNSeg'
+
+But models.py has DRNSeg class
+
+
+================================================================================================================================================================================================
+
+
+Skimange library error in skimage/exposure/exposure.py (Fixed)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Traceback (most recent call last):
+  File "train.py", line 237, in <module>
+    main(cfg)
+  File "train.py", line 201, in main
+    train_batch_time, train_data_time, train_loss = train(train_loader, model, criterion, optimizer, epoch)
+  File "train.py", line 44, in train
+    for i, (input, target) in enumerate(train_loader):
+  File "/home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 1203, in _next_data
+    return self._process_data(data)
+  File "/home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 1229, in _process_data
+    data.reraise()
+  File "/home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/torch/_utils.py", line 434, in reraise
+    raise exception
+AttributeError: Caught AttributeError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/torch/utils/data/_utils/worker.py", line 287, in _worker_loop
+    data = fetcher.fetch(index)
+  File "/home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/torch/utils/data/_utils/fetch.py", line 49, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/torch/utils/data/_utils/fetch.py", line 49, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/mnt/d/CloudStation/Studium/Bachelor/5. Semester/Robotics/project/repo/pose-interpreter-networks/segmentation/datasets.py", line 42, in __getitem__
+    image, label = self.transforms([image, label])
+  File "/mnt/d/CloudStation/Studium/Bachelor/5. Semester/Robotics/project/repo/pose-interpreter-networks/segmentation/transforms.py", line 211, in __call__
+    return [self._transform(self.transforms[i], d, i) for i, d in enumerate(data)]
+  File "/mnt/d/CloudStation/Studium/Bachelor/5. Semester/Robotics/project/repo/pose-interpreter-networks/segmentation/transforms.py", line 211, in <listcomp>
+    return [self._transform(self.transforms[i], d, i) for i, d in enumerate(data)]
+  File "/mnt/d/CloudStation/Studium/Bachelor/5. Semester/Robotics/project/repo/pose-interpreter-networks/segmentation/transforms.py", line 207, in _transform
+    data = transform(data)
+  File "/mnt/d/CloudStation/Studium/Bachelor/5. Semester/Robotics/project/repo/pose-interpreter-networks/segmentation/transforms.py", line 173, in __call__
+    return adjust_gamma(data, gamma=value)
+  File "/home/rene/miniconda3/envs/robotics/lib/python3.6/site-packages/skimage/exposure/exposure.py", line 363, in adjust_gamma
+    out = (np.pow((image / scale), gamma)) * scale * gain
+	
+	
+change
+
+out = ((image / scale) ** gamma) * scale * gain
+
+to
+
+out = (np.power((image / scale), gamma)) * scale * gain
+	
+===============================================================================================================================================================================
+	
+model module error (Fixed):
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+deprecated naming use doqu instead
+	incompatible with pyton3 -> Doqu needs to be modified to work with python3 therefore override doqu with the provided files
+	
+https://github.com/phschoepf/pose-interpreter-networks/tree/troubleshooting/doqu_fix
+
+
+===============================================================================================================================================================================
+
+
+Blender not working:
+
+normal install doesn't work, current method after trying for a while:
+
+# install blender
+import os
+
+os.chdir(root_directory)
+if(not path.exists('blender')):
+    !wget https://download.blender.org/release/Blender2.79/blender-2.79-linux-glibc219-x86_64.tar.bz2
+    !mkdir blender
+    !tar -xf blender-2.79-linux-glibc219-x86_64.tar.bz2 -C blender --strip-components 1
+    !rm blender-2.79-linux-glibc219-x86_64.tar.bz2
+    #!ln -s blender /usr/local/bin/blender
+    !ln -s /mnt/d/CloudStation/Studium/Bachelor/5.\ Semester/Robotics/project/repo/pose-interpreter-networks/blender /usr/local/bin/blender
+    !chown -h rene:rene /usr/local/bin/blender
+    
+%cd blender
+!./blender -v
+os.chdir(root_directory)
+
+
+current error even with admin permissions (also happens on Google Colab):
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+PermissionError                           Traceback (most recent call last)
+/mnt/d/CloudStation/Studium/Bachelor/5. Semester/Robotics/project/repo/pose-interpreter-networks/end_to_end_visualize.ipynb in <module>
+     21         all_objects = np.zeros_like(resized_image)
+     22         for i, object_name in enumerate(object_names):
+---> 23             single_object = pose_renderers[object_names[i]].render(positions[i], orientations[i])
+     24             all_objects = np.maximum(all_objects, single_object * object_colors[object_names[i]])
+     25         rendered_pose = (1 - alpha) * resized_image + alpha * all_objects
+
+/mnt/d/CloudStation/Studium/Bachelor/5. Semester/Robotics/project/repo/pose-interpreter-networks/pose_estimation/utils.py in render(self, position, orientation)
+     89                                    str(self.camera_parameters['p_x']), str(self.camera_parameters['p_y']),
+     90                                    str(self.camera_scale),
+---> 91                                    position, orientation])
+     92             assert ret == 0
+     93             image = np.asarray(Image.open(output_path))
+
+~/miniconda3/envs/robotics/lib/python3.6/subprocess.py in call(timeout, *popenargs, **kwargs)
+    285     retcode = call(["ls", "-l"])
+    286     """
+--> 287     with Popen(*popenargs, **kwargs) as p:
+    288         try:
+    289             return p.wait(timeout=timeout)
+
+~/miniconda3/envs/robotics/lib/python3.6/subprocess.py in __init__(self, args, bufsize, executable, stdin, stdout, stderr, preexec_fn, close_fds, shell, cwd, env, universal_newlines, startupinfo, creationflags, restore_signals, start_new_session, pass_fds, encoding, errors)
+    727                                 c2pread, c2pwrite,
+    728                                 errread, errwrite,
+--> 729                                 restore_signals, start_new_session)
+    730         except:
+    731             # Cleanup if the child failed starting.
+
+~/miniconda3/envs/robotics/lib/python3.6/subprocess.py in _execute_child(self, args, executable, preexec_fn, close_fds, pass_fds, cwd, env, startupinfo, creationflags, shell, p2cread, p2cwrite, c2pread, c2pwrite, errread, errwrite, restore_signals, start_new_session)
+   1362                         if errno_num == errno.ENOENT:
+   1363                             err_msg += ': ' + repr(err_filename)
+-> 1364                     raise child_exception_type(errno_num, err_msg, err_filename)
+   1365                 raise child_exception_type(err_msg)
+   1366 
+
+PermissionError: [Errno 13] Permission denied: '/usr/local/bin/blender'
+
+
+
+
+Fails while rendering the STL models: https://i.imgur.com/elO6m7v.png
+
+
+===============================================================================================================================================================================
